@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using VideoAppBLL;
 using VideoAppEntity;
 
@@ -16,13 +17,17 @@ namespace ConsoleApp1
                 "Add Video",
                 "Delete Video",
                 "Edit Video",
-                "Exit",
+                "Search Videos",
+                "Exit"
             };
 
             var selection = 0;
-
-            while (selection != 5)
+            selection = ShowMenu(menuItems);
+            Console.Clear();
+            while (selection != 6)
             {
+                Console.Clear();
+                Console.WriteLine($"You chose: {selection} - {menuItems[selection - 1]}\n");
                 switch (selection)
                 {
                     case 1:
@@ -37,35 +42,53 @@ namespace ConsoleApp1
                     case 4:
                         EditVideo();
                         break;
+                    case 5:
+                        SearchVideos();
+                        break;
                     default:
                         break;
                 }
+                Console.WriteLine("\nPress Enter to go back!");
+                Console.ReadLine();
+                Console.Clear();
                 selection = ShowMenu(menuItems);
             }
-            Console.WriteLine("Bye bye!");
+            Console.Clear();
+            Console.WriteLine("Bye bye!\n\nPress Enter to Exit!");
             Console.ReadLine();
+        }
+
+        private static void SearchVideos()
+        {
+            Console.WriteLine("Type what you want to search for:");
+            var searchText = Console.ReadLine();
+            Console.WriteLine("Here's the result:\n");
+            bllFacade.VideoService.GetAll().Where(v => v.Title.ToLower().Contains(searchText.ToLower())).ToList().
+                ForEach(v => Console.WriteLine($"ID: {v.Id} | Title: {v.Title} | Director: {v.Director} | Genre: {v.Genre}"));
+            Console.WriteLine("");
         }
 
         private static void EditVideo()
         {
-            var videoFound = FindVideoByID();
+            ListVideos();
+            var videoFound = GetVideoByID();
             if (videoFound != null)
             {
-                Console.WriteLine("Title: ");
+                Console.WriteLine("\nTitle:");
                 videoFound.Title = Console.ReadLine();
-                Console.WriteLine("Director: ");
+                Console.WriteLine("\nDirector:");
                 videoFound.Director = Console.ReadLine();
                 bllFacade.VideoService.Update(videoFound);
             }
             else
             {
-                Console.WriteLine("Video not found!");
+                Console.WriteLine("\nVideo not found!");
             }
         }
 
-        private static Video FindVideoByID()
+        private static Video GetVideoByID()
         {
-            Console.WriteLine("Type in the ID of the video:");
+            Console.WriteLine("Type in the ID of the video:\n");
             int id;
             while (!int.TryParse(Console.ReadLine(), out id))
             {
@@ -77,12 +100,14 @@ namespace ConsoleApp1
 
         private static void DeleteVideo()
         {
-            var customerFound = FindVideoByID();
+            ListVideos();
+            Console.WriteLine("");
+            var customerFound = GetVideoByID();
             if (customerFound != null)
             {
                 bllFacade.VideoService.Delete(customerFound.Id);
             }
-            var response = customerFound == null ? "Video not found" : "Video was deleted";
+            var response = customerFound == null ? "\nVideo not found" : "\nVideo was deleted";
             Console.WriteLine(response);
         }
 
@@ -91,23 +116,23 @@ namespace ConsoleApp1
             Console.WriteLine("Title:");
             var title = Console.ReadLine();
 
-            Console.WriteLine("Director:");
+            Console.WriteLine("\nDirector:");
             var director = Console.ReadLine();
-            
+
             bllFacade.VideoService.Create(new Video()
             {
                 Title = title,
                 Director = director,
                 Genre = Genre.Action
             });
+            Console.WriteLine("\nThe video has been added!");
         }
 
         private static void ListVideos()
         {
-            Console.WriteLine("\nList of Customers:");
+            Console.WriteLine("List of Customers:\n");
             bllFacade.VideoService.GetAll().ForEach(v =>
                 Console.WriteLine($"ID: {v.Id} | Title: {v.Title} | Director: {v.Director} | Genre: {v.Genre}"));
-            Console.WriteLine("");
         }
 
         private static int ShowMenu(string[] menuItems)
@@ -117,16 +142,17 @@ namespace ConsoleApp1
             {
                 Console.WriteLine($"{i + 1}:{menuItems[i]}");
             }
+            Console.WriteLine("");
 
             int selection;
             while (!int.TryParse(Console.ReadLine(), out selection)
                    || selection < 1
-                   || selection > 5)
+                   || selection > 6)
             {
-                Console.WriteLine("You need to select a number between 1-5");
+                Console.WriteLine("You need to select a number between 1-6");
             }
 
-            Console.WriteLine($"Selection: {selection}");
+            Console.WriteLine("");
             return selection;
         }
     }
