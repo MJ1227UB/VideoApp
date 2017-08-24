@@ -1,7 +1,11 @@
-﻿namespace VideoAppDAL
+﻿using System;
+
+namespace VideoAppDAL
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
-        
+        IVideoRepository VideoRepository { get; }
+
+        int Complete();
     }
 }
