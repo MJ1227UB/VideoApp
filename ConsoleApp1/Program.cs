@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using VideoAppBLL;
 using VideoAppEntity;
@@ -64,7 +65,7 @@ namespace ConsoleApp1
             var searchText = Console.ReadLine();
             Console.WriteLine("Here's the result:\n");
             bllFacade.VideoService.GetAll().Where(v => v.Title.ToLower().Contains(searchText.ToLower())).ToList().
-                ForEach(v => Console.WriteLine($"ID: {v.Id} | Title: {v.Title} | Director: {v.Director} | Genre: {v.Genre}"));
+                ForEach(v => Console.WriteLine($"ID: {v.Id} | Title: {v.Title} | Director: {v.Director}"));
             Console.WriteLine("");
         }
 
@@ -115,24 +116,41 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Title:");
             var title = Console.ReadLine();
-
             Console.WriteLine("\nDirector:");
             var director = Console.ReadLine();
-
             bllFacade.VideoService.Create(new Video()
             {
                 Title = title,
-                Director = director,
-                Genre = Genre.Action
+                Director = director
             });
             Console.WriteLine("\nThe video has been added!");
+        }
+
+        private static bool AddMoreVideos()
+        {
+            Console.WriteLine("Do you want to add another video?\nInsert 'yes' or 'no'");
+            string answer = Console.ReadLine();
+
+            while (answer != "yes" || answer != "no")
+            {
+                Console.WriteLine("Please insert 'yes' or 'no'");
+                answer = Console.ReadLine();
+            }
+            if (answer == "yes")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private static void ListVideos()
         {
             Console.WriteLine("List of Customers:\n");
             bllFacade.VideoService.GetAll().ForEach(v =>
-                Console.WriteLine($"ID: {v.Id} | Title: {v.Title} | Director: {v.Director} | Genre: {v.Genre}"));
+                Console.WriteLine($"ID: {v.Id} | Title: {v.Title} | Director: {v.Director}"));
         }
 
         private static int ShowMenu(string[] menuItems)

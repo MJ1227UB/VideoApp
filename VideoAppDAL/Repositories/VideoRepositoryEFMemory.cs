@@ -18,6 +18,11 @@ namespace VideoAppDAL.Repositories
             return video;
         }
 
+        public List<Video> CreateAll(List<Video> videoList)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<Video> GetAll()
         {
             return _context.Videos.ToList();

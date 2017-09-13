@@ -24,6 +24,11 @@ namespace VideoAppBLL.Services
             }
         }
 
+        public List<Video> CreateAll(List<Video> videoList)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Video> GetAll()
         {
             using (var uow = facade.UnitOfWork)

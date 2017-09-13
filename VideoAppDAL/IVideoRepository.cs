@@ -7,6 +7,7 @@ namespace VideoAppDAL
     {
         //Create
         Video Create(Video video);
+        List<Video> CreateAll(List<Video> videoList);
 
         //Read
         List<Video> GetAll();
