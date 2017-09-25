@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using VideoAppBLL;
-using VideoAppEntity;
 
 namespace ConsoleApp1
 {
@@ -87,7 +86,7 @@ namespace ConsoleApp1
             }
         }
 
-        private static Video GetVideoByID()
+        private static VideoBO GetVideoByID()
         {
             Console.WriteLine("Type in the ID of the video:\n");
             int id;

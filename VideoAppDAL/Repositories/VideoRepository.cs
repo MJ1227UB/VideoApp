@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using VideoAppDAL.Context;
-using VideoAppEntity;
+using VideoAppDAL.Entities;
 
 namespace VideoAppDAL.Repositories
 {
-    public class VideoRepositoryEFMemory : IVideoRepository
+    public class VideoRepository : IVideoRepository
     {
-        private InMemoryContext _context;
-        public VideoRepositoryEFMemory(InMemoryContext context)
+        private VideoAppContext _context;
+        public VideoRepository(VideoAppContext context)
         {
-            this._context = context;
+            _context = context;
         }
         public Video Create(Video video)
         {
@@ -30,12 +30,7 @@ namespace VideoAppDAL.Repositories
 
         public Video Get(int Id)
         {
-            return _context.Videos.FirstOrDefault(x => x.Id == Id);
-        }
-
-        public Video Update(Video video)
-        {
-            throw new System.NotImplementedException();
+            return _context.Videos.FirstOrDefault(v => v.Id == Id);
         }
 
         public Video Delete(int Id)

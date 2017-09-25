@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using VideoAppEntity;
+using VideoAppDAL.Entities;
 
 namespace VideoAppDAL
 {
@@ -12,10 +12,7 @@ namespace VideoAppDAL
         //Read
         List<Video> GetAll();
         Video Get(int Id);
-
-        //Update
-        Video Update(Video video);
-
+        
         //Delete
         Video Delete(int Id);
     }

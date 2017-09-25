@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using VideoAppBLL.BusinessObjects;
+using VideoAppBLL.Converter;
 using VideoAppDAL;
-using VideoAppEntity;
 
 namespace VideoAppBLL.Services
 {
     public class VideoService : IVideoService
     {
+        VideoConverter converter = new VideoConverter();
         private DALFacade facade;
 
         public VideoService(DALFacade facade)
@@ -14,60 +17,61 @@ namespace VideoAppBLL.Services
             this.facade = facade;
         }
 
-        public Video Create(Video video)
+        public VideoBO Create(VideoBO video)
         {
             using (var uow = facade.UnitOfWork)
             {
-                var newVideo = uow.VideoRepository.Create(video);
+                var newVideo = uow.VideoRepository.Create(converter.Convert(video));
                 uow.Complete();
-                return newVideo;
+                return converter.Convert(newVideo);
             }
         }
 
-        public List<Video> CreateAll(List<Video> videoList)
+        public List<VideoBO> CreateAll(List<VideoBO> videoList)
         {
             throw new NotImplementedException();
         }
 
-        public List<Video> GetAll()
+        public List<VideoBO> GetAll()
         {
             using (var uow = facade.UnitOfWork)
             {
-                return uow.VideoRepository.GetAll();
+                return uow.VideoRepository.GetAll().Select(converter.Convert).ToList();
             }
         }
 
-        public Video Get(int Id)
+        public VideoBO Get(int Id)
         {
             using (var uow = facade.UnitOfWork)
             {
-                return uow.VideoRepository.Get(Id);
+                return converter.Convert(uow.VideoRepository.Get(Id));
             }
         }
 
-        public Video Update(Video video)
+        public VideoBO Update(VideoBO video)
         {
             using (var uow = facade.UnitOfWork)
             {
                 var videoFromDB = uow.VideoRepository.Get(video.Id);
                 if (videoFromDB == null)
                 {
-                    throw new InvalidOperationException("Customer not found");
+                    throw new InvalidOperationException("Video not found");
                 }
                 videoFromDB.Title = video.Title;
-                videoFromDB.Director = video.Director;
+                videoFromDB.Id = video.Id;
+                videoFromDB.PricePeDay = video.PricePeDay;
                 uow.Complete();
-                return videoFromDB;
+                return converter.Convert(videoFromDB);
             }
         }
 
-        public Video Delete(int Id)
+        public VideoBO Delete(int Id)
         {
             using (var uow = facade.UnitOfWork)
             {
-                var newVideo= uow.VideoRepository.Delete(Id);
+                var newVideo = uow.VideoRepository.Delete(Id);
                 uow.Complete();
-                return newVideo;
+                return converter.Convert(newVideo);
             }
         }
     }

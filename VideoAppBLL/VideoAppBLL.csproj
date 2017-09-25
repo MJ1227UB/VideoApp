@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CustomerAppEntity\VideoAppEntity.csproj" />
     <ProjectReference Include="..\VideoAppDAL\VideoAppDAL.csproj" />
   </ItemGroup>
 

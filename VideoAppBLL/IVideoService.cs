@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
-using System.Linq.Expressions;
-using VideoAppEntity;
+using VideoAppBLL.BusinessObjects;
 
 namespace VideoAppBLL
 {
     public interface IVideoService
     {
         //Create
-        Video Create(Video video);
-        List<Video> CreateAll(List<Video> videoList);
+        VideoBO Create(VideoBO video);
+        List<VideoBO> CreateAll(List<VideoBO> videoList);
 
         //Read
-        List<Video> GetAll();
-        Video Get(int Id);
+        List<VideoBO> GetAll();
+        VideoBO Get(int Id);
 
         //Update
-        Video Update(Video video);
+        VideoBO Update(VideoBO video);
 
         //Delete
-        Video Delete(int Id);
+        VideoBO Delete(int Id);
     }
 }

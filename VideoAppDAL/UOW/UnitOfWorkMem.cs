@@ -6,12 +6,13 @@ namespace VideoAppDAL.UOW
     public class UnitOfWorkMem : IUnitOfWork
     {
         public IVideoRepository VideoRepository { get; internal set; }
-        private InMemoryContext context;
-
+        public IGenreRepository GenreRepository { get; internal set; }
+        private VideoAppContext context;
         public UnitOfWorkMem()
         {
-            context = new InMemoryContext();
-            VideoRepository = new VideoRepositoryEFMemory(context);
+            context = new VideoAppContext();
+            VideoRepository = new VideoRepository(context);
+            GenreRepository = new GenreRepository(context);
         }
 
         public void Dispose()
