@@ -22,7 +22,7 @@ namespace VideoRestAPI.Controllers
         }
 
         // GET: api/Video/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public VideoBO Get(int id)
         {
             return facade.VideoService.Get(id);
