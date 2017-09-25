@@ -11,6 +11,7 @@ namespace VideoAppDAL.UOW
         public UnitOfWorkMem()
         {
             context = new VideoAppContext();
+            context.Database.EnsureCreated();
             VideoRepository = new VideoRepository(context);
             GenreRepository = new GenreRepository(context);
         }

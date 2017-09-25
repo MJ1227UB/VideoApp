@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using VideoAppBLL;
+using VideoAppBLL.BusinessObjects;
+using VideoAppDAL.Entities;
 
 namespace ConsoleApp1
 {
@@ -64,7 +66,7 @@ namespace ConsoleApp1
             var searchText = Console.ReadLine();
             Console.WriteLine("Here's the result:\n");
             bllFacade.VideoService.GetAll().Where(v => v.Title.ToLower().Contains(searchText.ToLower())).ToList().
-                ForEach(v => Console.WriteLine($"ID: {v.Id} | Title: {v.Title} | Director: {v.Director}"));
+                ForEach(v => Console.WriteLine($"ID: {v.Id} | Title: {v.Title}"));
             Console.WriteLine("");
         }
 
@@ -76,8 +78,6 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("\nTitle:");
                 videoFound.Title = Console.ReadLine();
-                Console.WriteLine("\nDirector:");
-                videoFound.Director = Console.ReadLine();
                 bllFacade.VideoService.Update(videoFound);
             }
             else
@@ -117,11 +117,6 @@ namespace ConsoleApp1
             var title = Console.ReadLine();
             Console.WriteLine("\nDirector:");
             var director = Console.ReadLine();
-            bllFacade.VideoService.Create(new Video()
-            {
-                Title = title,
-                Director = director
-            });
             Console.WriteLine("\nThe video has been added!");
         }
 
@@ -149,7 +144,7 @@ namespace ConsoleApp1
         {
             Console.WriteLine("List of Customers:\n");
             bllFacade.VideoService.GetAll().ForEach(v =>
-                Console.WriteLine($"ID: {v.Id} | Title: {v.Title} | Director: {v.Director}"));
+                Console.WriteLine($"ID: {v.Id} | Title: {v.Title}"));
         }
 
         private static int ShowMenu(string[] menuItems)
